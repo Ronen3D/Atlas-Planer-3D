@@ -73,10 +73,14 @@ export class Scene {
       obj.getWorldPosition(pos);
       if (this.mControls) {
         this.mControls.target.copy(pos);
+        this.mCamera.position.x = pos.x + 20;
+        this.mCamera.position.y = pos.y + 30;
+        this.mCamera.position.z = pos.z+20;
         this.mControls.update();
       } else {
         this.mCamera.lookAt(pos);
       }
+      console.log(`Scene: setControlsLookAtObject to ${pos.x}, ${pos.y}, ${pos.z}`);
     }
     //_______________________________________________________
     
@@ -93,6 +97,7 @@ export class Scene {
       this.mRenderer.render(this.mScene, this.mCamera);
     }
     //_______________________________________________________
+
     private mStatsEl?: HTMLDivElement;
     private mStatsRafId?: number;
     private mStatsLastTime = performance.now();
@@ -130,6 +135,7 @@ export class Scene {
       this.mContainer.appendChild(el);
       this.mStatsEl = el;
     }
+    //_______________________________________________________
 
     private startStats(): void {
       if (this.mStatsRafId) return;

@@ -30,6 +30,7 @@ export class Terrain {
    * pVerticalDistance: scale factor applied to height values.
    */
   public setTerrain(pData: number[][], pHorizontalDistance: number, pVerticalDistance: number, pCenterUUT: THREE.Vector2): void {
+    let startTime = performance.now();
     this.mMatrix = pData;
     this.mHorizontalDistance = pHorizontalDistance;
     this.mVerticalDistance = pVerticalDistance;
@@ -152,6 +153,8 @@ export class Terrain {
     this.mMesh.receiveShadow = true;
     this.mMesh.castShadow = false;
     this.showTrainData();
+    let endTime = performance.now();
+    console.log(`Terrain generated in ${(endTime - startTime).toFixed(1)} ms`);
     if (Terrain.onReadyCallback) {
       Terrain.onReadyCallback();
     }
@@ -163,6 +166,7 @@ export class Terrain {
 * Creates a height matrix (rows = image height, cols = image width) and calls setTerrain.
 */
   public async loadFromImage(pUrl: string, pHorizontalDistance: number, pVerticalDistance: number, pCenterUUT: THREE.Vector2): Promise<void> {
+    let startTime = performance.now();
     const img = new Image();
     img.crossOrigin = 'Anonymous';
     img.src = pUrl;
@@ -196,6 +200,8 @@ export class Terrain {
       }
       aMatrix[y] = row;
     }
+    let endTime = performance.now();
+    console.log(`Image loaded and processed in ${(endTime - startTime).toFixed(1)} ms`);
     this.setTerrain(aMatrix, pHorizontalDistance, pVerticalDistance, pCenterUUT.clone());
   }
   //_______________________________________________________
