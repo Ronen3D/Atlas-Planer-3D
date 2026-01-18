@@ -1,0 +1,9 @@
+[{"id":"001","name":"Camera 01","type":"Camera","url":"/3DModels/Camera01.glb","FOV":90,"rotate_y":360,"rotate_x":50},
+{"id":"001","name":"Camera 02","type":"Camera","url":"/3DModels/Camera02.glb","FOV":55,"rotate_y":0,"rotate_x":0},
+{"id":"005","name":"Radar 02","type":"item","url":"/3DModels/Radar02.glb"},
+{"id":"006","name":"Radar 03","type":"Item","url":"/3DModels/Radar03.glb"},
+{"id":"007","name":"Radar 04","type":"Item","url":"/3DModels/Radar04.glb"},
+{"id":"009","name":"Target 01","type":"Target","url":"/3DModels/Target01.glb"},
+{"id":"010","name":"Target 02","type":"Target","url":"/3DModels/Target02.glb"},
+{"id":"011","name":"Bullet 01","type":"Bullet","url":"/3DModels/Bullet01.glb","AirSpeed":340},
+{"id":"012","name":"Tank 01","type":"Tank","url":"/3DModels/Tank01.glb","rotate_y":180,"rotate_x":0,"power":1500}]
