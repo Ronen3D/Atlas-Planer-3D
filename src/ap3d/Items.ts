@@ -4,6 +4,7 @@
 
 import { Scene } from "./Scene";
 import { Terrain } from "./Terrain";
+import { Item } from "./Item";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 export class Items {
@@ -54,7 +55,7 @@ export class Items {
             obj.position.set(x, y!, z);
             this.mScene?.addToScene(obj);
             // save instance: keep a minimal record (object reference and type if available)
-            itemEntry.instances.push({ object: obj, type: itemEntry.type ?? null, libId: pItemLibraryId });
+            itemEntry.instances.push(new Item(itemEntry, obj));
         };
 
         // if already loaded -> clone immediately
@@ -93,7 +94,29 @@ export class Items {
         });
     }
     //_______________________________________________________
-
+    public getItemsList(): Item[] {
+        const items: Item[] = [];
+        for (const itemEntry of Items.sLibraryDataMap.values()) {
+            if (itemEntry.instances) {
+                items.push(...itemEntry.instances);
+            }
+        }
+        return items;
+    }
+    //_______________________________________________________
+    public getItemById(itemId: string): Item | null {
+        for (const itemEntry of Items.sLibraryDataMap.values()) {
+            if (itemEntry.instances) {
+                for (const item of itemEntry.instances) {
+                    if (item.id === itemId) {
+                        return item;
+                    }
+                }   
+            }
+        }
+        return null;
+    }
+    //_______________________________________________________
     dispose(): void {
         if (this.mScene) {
             this.mScene.dispose();

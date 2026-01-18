@@ -1,5 +1,6 @@
 import { Scene } from './Scene';
 import { Terrain } from './Terrain';
+import { Item } from './Item';
 import { Items } from './Items';
 import * as THREE from 'three';
 import { Hooks } from './Hooks';
@@ -8,7 +9,6 @@ export class Manager {
     private mScene?: Scene;
     private mTerrain?: Terrain;
     private mItems?: Items;
-    private mLibraryData: any;
     private mHooks?: Hooks;
 
 
@@ -16,14 +16,18 @@ export class Manager {
         if (!this.mScene) {
             this.mScene = new Scene(container);
         }
+        if (!this.mTerrain) {
+        this.mTerrain = new Terrain();
+        }
+        if (!this.mItems) {
+            this.mItems = new Items(this.mScene, this.mTerrain);
+        }
     }
     //_______________________________________________________
 
     public setTerrain(pData: number[][], pHorizontalDistance: number, pVerticalDistance: number, pXCenterUUT: number, pYCenterUUT: number): void {
-        if (!this.mScene) this.int();
-       this.mTerrain = new Terrain();
-        this.mTerrain.setTerrain(pData, pHorizontalDistance, pVerticalDistance, new THREE.Vector2(pXCenterUUT, pYCenterUUT));
-        const mesh = this.mTerrain.getMesh();
+        this.mTerrain?.setTerrain(pData, pHorizontalDistance, pVerticalDistance, new THREE.Vector2(pXCenterUUT, pYCenterUUT));
+        const mesh = this.mTerrain?.getMesh();
         if (mesh && this.mScene) {
             this.mScene.addToScene(mesh);
         }
@@ -31,37 +35,33 @@ export class Manager {
     //_______________________________________________________
 
     public async setTerrainFromImage(url: string, pHorizontalDistance: number, pVerticalDistance: number, pXCenterUUT: number, pYCenterUUT: number): Promise<void> {
-        if (!this.mScene) this.int();
-
-        this.mTerrain = new Terrain();
-        await this.mTerrain.loadFromImage(url, pHorizontalDistance, pVerticalDistance, new THREE.Vector2(pXCenterUUT, pYCenterUUT));
-        const mesh = this.mTerrain.getMesh();
+        await this.mTerrain?.loadFromImage(url, pHorizontalDistance, pVerticalDistance, new THREE.Vector2(pXCenterUUT, pYCenterUUT));
+        const mesh = this.mTerrain?.getMesh();
         if (mesh && this.mScene) {
             this.mScene.addToScene(mesh);
         }
     }
-
     //_______________________________________________________
+
     /**
      * Forward to Scene to set the OrbitControls look-at target.
      */
     public setControlsLookAt(x: number, y: number, z: number): void {
-        if (!this.mScene) this.int();
         if (this.mScene) {
             this.mScene.setControlsLookAt(x, y, z);
         }
     }
-
     //_______________________________________________________
+
     /**
      * Forward to Scene to set the OrbitControls look-at target from an Object3D.
      */
     public setControlsLookAtObject(obj: THREE.Object3D): void {
-        if (!this.mScene) this.int();
         if (this.mScene) {
             this.mScene.setControlsLookAtObject(obj);
         }
     }
+    //_______________________________________________________
 
     public get hooks(): Hooks {
         if (!this.mHooks) {
@@ -72,7 +72,6 @@ export class Manager {
     //_______________________________________________________
 
     public setLibraryData(pData: any): void {
-        this.mLibraryData = pData;
         if (!this.mItems) this.mItems = new Items(this.mScene, this.mTerrain);
         this.mItems.addLibraryData(pData);
     }
@@ -86,6 +85,13 @@ export class Manager {
     }
     //_______________________________________________________
 
+    public getItemsList(): Item[] {
+        if (!this.mItems)
+            return [];
+        return this.mItems.getItemsList();
+    }
+    //_______________________________________________________
+
     dispose(): void {
         if (this.mScene) {
             this.mScene.dispose();
@@ -96,6 +102,15 @@ export class Manager {
             this.mTerrain = undefined;
         }
     }
-
+    //_______________________________________________________
+    public focusOnItemById(itemId: string): void {
+        if (!this.mItems || !this.mScene) {
+            return;
+        }
+        const item = this.mItems.getItemById(itemId);
+        if (item && item.object) {
+            this.mScene.setControlsLookAtObject(item.object);
+        }
+    }   
 }
 

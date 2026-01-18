@@ -7,7 +7,17 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   </head>
   <body>
-    <div id="app" style="width: 800px; height: 800px;"></div>
-    <script type="module" src="samples.js"></script>
+    <div style="display: flex; gap: 10px; padding: 10px; background-color: #f0f0f0; align-items: center;">
+      <button id="getItemsBtn" style="padding: 8px 16px; cursor: pointer;">Get Items List</button>
+      <span id="itemCount" style="font-weight: bold;">Items: 0</span>
+      <label for="itemsCombobox" style="margin-left: 20px;">Select Item:</label>
+      <select id="itemsCombobox" style="padding: 5px;">
+        <option value="">-- Select an item --</option>
+      </select>
+      <button id="focusItemBtn" style="padding: 8px 16px; cursor: pointer;">Focus Selected Item</button>
+    </div>
+    <div id="app" style="width: 100%; height: calc(100vh - 50px);"></div>
+    
+    <script type="module" src="UIControls.js"></script>
   </body>
 </html>
