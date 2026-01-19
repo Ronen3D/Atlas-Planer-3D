@@ -33,7 +33,7 @@ export class Items {
         // compute Y using terrain if omitted
         if (y == null) {
             if (this.mTerrain) {
-                y = this.mTerrain.heightAtPoint(x, z);
+                y = this.mTerrain.heightAtPoint(x, z)|0 + 1; // add 1 unit above terrain
             }
             if (y == null) {
                 y = 0;
@@ -52,10 +52,14 @@ export class Items {
 
         const addCloneToScene = (gltf: any) => {
             const obj = gltf.scene.clone(true);
-            obj.position.set(x, y!, z);
+            let aItem = new Item(itemEntry, obj)
+            aItem.setPosition(x, y!, z);
+            //aItem.setRotation(0,(itemEntry.rotate_y ? itemEntry.rotate_y * Math.PI / 180 : 0), 0);
+            /// aItem.setRotation(0,itemEntry.rotate_y * Math.PI / 180, 0);
+            //obj.position.set(x, y!, z);
             this.mScene?.addToScene(obj);
             // save instance: keep a minimal record (object reference and type if available)
-            itemEntry.instances.push(new Item(itemEntry, obj));
+            itemEntry.instances.push(aItem);
         };
 
         // if already loaded -> clone immediately

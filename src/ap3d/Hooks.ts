@@ -1,3 +1,5 @@
+import { Item } from "./Item";
+import { Scene } from "./Scene";
 import { Terrain } from "./Terrain";
 
 /**
@@ -11,5 +13,9 @@ export class Hooks {
      */
     public onTerrainReady(pMethod: () => void): void {
         Terrain.onReadyCallback = pMethod;
+    }
+
+    public onClick(pMethod: (item:Item,x:number,y:number,z:number) => void){
+        Scene.onClickCallback = pMethod;
     }
 }

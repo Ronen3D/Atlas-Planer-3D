@@ -9,6 +9,17 @@ await sample.init();
 const getItemsBtn = document.getElementById('getItemsBtn');
 const itemCountSpan = document.getElementById('itemCount');
 const itemsCombobox = document.getElementById('itemsCombobox');
+const focusItemBtn = document.getElementById('focusItemBtn');
+
+// Focus on selected item
+focusItemBtn.addEventListener('click', () => {
+    const selectedItemId = itemsCombobox.value;
+    if (selectedItemId) {
+        sample.focuseOnItemById(selectedItemId);
+    }
+});
+
+// Get items list and display count
 
 getItemsBtn.addEventListener('click', () => {
     const itemsList = sample.getItemsList();
@@ -38,9 +49,15 @@ itemsCombobox.addEventListener('change', (e) => {
     if (e.target.value) {
         console.log('Selected item ID:', e.target.value);
     }
-    sample.focuseOnItemById(e.target.value);
 });
 
+
+//_______________________________________________________
+export function changeSelectionByClick(ItemId) {
+    itemsCombobox.value = ItemId;
+}
+
+window.changeSelectionByClick = changeSelectionByClick;
 
 
 

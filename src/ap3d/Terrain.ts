@@ -16,7 +16,7 @@ export class Terrain {
   constructor(materialOptions?: THREE.MeshStandardMaterialParameters) {
     const aColor = 0xAE9B7D; // 0x88cc88
     this.mMaterial = new THREE.MeshStandardMaterial(
-      Object.assign({ color: aColor, side: THREE.DoubleSide }, materialOptions)
+      Object.assign({ color: aColor, side: THREE.FrontSide }, materialOptions)
     );
   }
   //_______________________________________________________
@@ -150,6 +150,8 @@ export class Terrain {
     }
 
     this.mMesh = new THREE.Mesh(geometry, this.mMaterial);
+    this.mMesh.name = 'Terrain';
+    this.mMesh.userData['itemId'] = 'Terrain';
     this.mMesh.receiveShadow = true;
     this.mMesh.castShadow = false;
     this.showTrainData();
@@ -227,11 +229,11 @@ export class Terrain {
     return this.mMesh;
   }
   //_______________________________________________________
-  public heightAtPoint(x: number, z: number): number | undefined {
-    if (!this.mMesh) return undefined;
+  public heightAtPoint(x: number, z: number): number | null {
+    if (!this.mMesh) return null;
     const position = this.mMesh.geometry.attributes.position as THREE.BufferAttribute;
     const vertexCount = position.count;
-    let closestY: number | undefined = undefined;
+    let closestY: number | null = null;
     let closestDistSq = Infinity;
     for (let i = 0; i < vertexCount; i++) {
       const vx = position.getX(i);

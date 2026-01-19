@@ -19,6 +19,8 @@ export class Item {
         this.id = Item.generateId();
         this.name = props.name ?? 'Item';
         this.object = pObject;
+        this.object.name = this.name + '_' + this.id;
+        this.object.userData['itemId'] = this.id;
         this.metadata = props.metadata ?? {};
     }
     //_______________________________________________________

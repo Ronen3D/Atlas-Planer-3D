@@ -26,9 +26,17 @@ export class Atlas3DPlanerSample {
             console.log("Terrain is ready!");
             this.addRandomItems();
         });
-
+        // Setup onClick callback
+        this.moduleManager.hooks.onClick((itemId,x,y,z) => {
+            if (itemId === "Terrain") {
+                console.log(`Clicked on Terrain at coordinates: X=${x}, Y=${y}, Z=${z}`);
+            }else{
+                console.log(`Clicked on Item ID: ${itemId} at coordinates: X=${x}, Y=${y}, Z=${z}`);
+                changeSelectionByClick(itemId);
+            }
+        });
         // Load terrain from image
-        await this.moduleManager.setTerrainFromImage('/images/Terrain07.png', 2, 50, 0, 0);
+        await this.moduleManager.setTerrainFromImage('/images/HeightMap_1500.jpg', 4, 100, 0, 0);
     }
     //_______________________________________________________
 
@@ -39,7 +47,7 @@ export class Atlas3DPlanerSample {
 
     addRandomItems() {
         // Add random items to the scene
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 200; i++) {
             const randomIndex = Math.floor(Math.random() * this.data.length);
             const randomX = Math.random() * 4000 - 2000;
             const randomY = Math.random() * 4000 - 2000;
@@ -63,6 +71,5 @@ export class Atlas3DPlanerSample {
         return this.moduleManager.getItemsList();
     }
 }
-
 
 
